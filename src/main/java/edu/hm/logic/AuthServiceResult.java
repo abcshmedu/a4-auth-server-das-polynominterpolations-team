@@ -1,24 +1,24 @@
 package edu.hm.logic;
 
-/** Dies ist unsere Implementierung des MediaServiceResult-Enums.
+/** Dies ist unsere Implementierung des AuthServiceResult-Enums.
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-public enum MediaServiceResult {
-    OK(200), FAIL(300);
+public enum AuthServiceResult {
+    OK(200), Created(201), Bad_Request(400), Unauthorized(401), Not_Found(404), Conflict(409); 
 
     /** Diese Variable enthält den Error-Code jedes
-     * MediaServiceResult-Objekts. */
+     * AuthServiceResult-Objekts. */
     private int statusCode;
 
     /** Diese Variable enthält zusätzliche Informationen bezüglich des
      * Error-Codes. */
     private String detail;
 
-    /** Default Ctor des MediaServiceResult-Enums.
+    /** Default Ctor des AuthServiceResult-Enums.
      * 
      * @param errorCode Der Error-Code, des Enums */
-    MediaServiceResult(int errorCode) {
+    AuthServiceResult(int errorCode) {
         this.statusCode = errorCode;
         this.detail = "";
     }
