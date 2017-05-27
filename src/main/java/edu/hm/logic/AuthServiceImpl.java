@@ -10,29 +10,25 @@ import edu.hm.data.User;
 
 public class AuthServiceImpl implements AuthService {
     private final TokenGenerator generator = new TokenGenerator();
-
-  //  private final List<String> userNameList = new ArrayList<>();
     
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, LogicUser> users = new HashMap<>();
 
-    private final Map<User, String> tokens = new HashMap<>();
+    private final Map<String, String> tokens = new HashMap<>();
 
     // USER-METHODEN
     @Override
     public AuthServiceResult addUser(final LogicUser user) {
         AuthServiceResult result;
-        String token = null;
+        
 
         result = testUser(user);
 
         if (result == AuthServiceResult.OK) {
-            token = generator.generateToken();
-          //  userNameList.add(user.getUserName());
             users.put(user.getUserName(), user);
-            tokens.put(user, token);
+            //tokens.put(user.getUserName(), token);
             result = AuthServiceResult.Created;
             result.setMessage("User created.");
-            result.setToken(token);
+
         }
 
         return result;
@@ -41,8 +37,15 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthServiceResult loginUser(LogicUser user) {
         AuthServiceResult result = null;
-        
+        String token = null;
         result = compareCredentials(user);
+        
+        if(result == AuthServiceResult.OK){     //User hat sich korrekt eingeloggt, schicke ihm sein token
+            token = generator.generateToken();
+            
+            
+            result.setToken(token);
+        }
         
         return result;
     }
@@ -103,8 +106,24 @@ public class AuthServiceImpl implements AuthService {
 
     private AuthServiceResult compareCredentials(final LogicUser user){
         AuthServiceResult result = null;
+        LogicUser userInDatabase;
+        userInDatabase = users.get(user.getUserName());
         
+        if(userInDatabase == null){
+            result = AuthServiceResult.Not_Found;
+            result.setMessage("Username was not found.");
+        }
+        else if(userInDatabase != null){
+            if(!user.getPassword().equals(userInDatabase.getPassword())){
+                result = AuthServiceResult.Bad_Request;
+                result.setMessage("Password is incorrect.");
+            }
+        }
         
+        if(result == null){
+            result = AuthServiceResult.OK;
+            result.setMessage("Successfully logged in.");
+        }
         
         return result;
     }
