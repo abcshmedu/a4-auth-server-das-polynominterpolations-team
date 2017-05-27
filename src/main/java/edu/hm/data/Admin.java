@@ -4,7 +4,7 @@ package edu.hm.data;
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-public class Admin implements ShareItParticipant {
+public class Admin {
     /** Name des Admins. */
     private String name;
 
@@ -36,15 +36,5 @@ public class Admin implements ShareItParticipant {
         this.adminName = adminName;
         this.password = password;
         this.name = name;
-    }
-
-    @Override
-    public boolean checkPassword(final String passwordToTest) {
-        boolean passwordIsOkay = false;
-        
-        if(passwordToTest.equals(password))
-            passwordIsOkay = true;
-        
-        return passwordIsOkay;
     }
 }

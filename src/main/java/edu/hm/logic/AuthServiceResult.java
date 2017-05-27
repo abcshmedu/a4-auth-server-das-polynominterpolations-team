@@ -5,7 +5,7 @@ package edu.hm.logic;
  * @author Sebastian Becker
  * @author Peter Straßer */
 public enum AuthServiceResult {
-    OK(200), Created(201), Bad_Request(400), Unauthorized(401), Not_Found(404), Conflict(409); 
+    OK(200), Created(201), Bad_Request(400), Unauthorized(401), Not_Found(404), Conflict(409);
 
     /** Diese Variable enthält den Error-Code jedes
      * AuthServiceResult-Objekts. */
@@ -15,9 +15,13 @@ public enum AuthServiceResult {
      * Error-Codes. */
     private String detail;
 
+    /** Diese Variable enthält ein Token, falls es generiert wird. */
+    private String token;
+
     /** Default Ctor des AuthServiceResult-Enums.
      * 
-     * @param errorCode Der Error-Code, des Enums */
+     * @param errorCode
+     *        Der Error-Code, des Enums */
     AuthServiceResult(int errorCode) {
         this.statusCode = errorCode;
         this.detail = "";
@@ -25,8 +29,9 @@ public enum AuthServiceResult {
 
     /** Diese Methode ermöglicht es dem Enum eine Error-Message mitzugeben.
      * 
-     * @param message Die Nachricht des Enums*/
-    public void setDetail(String message) {
+     * @param message
+     *        Die Nachricht des Enums */
+    public void setMessage(String message) {
         this.detail = message;
     }
 
@@ -37,10 +42,18 @@ public enum AuthServiceResult {
         return statusCode;
     }
 
-    /** Getter für die Error-Message.
+    /** Getter für die Message.
      * 
      * @return Liefert die Error-Message zurück */
-    public String getDetail() {
+    public String getMessage() {
         return detail;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
+    public String getToken() {
+        return token;
     }
 }

@@ -1,8 +1,11 @@
 package edu.hm.logic;
 
-import edu.hm.data.Admin;
+import edu.hm.data.LogicUser;
 
 public interface AuthService {
-    AuthServiceResult addAdmin(Admin admin);
+    //AuthServiceResult addAdmin(Admin admin);
     
+    AuthServiceResult addUser(LogicUser user);
+    
+    AuthServiceResult loginUser(LogicUser user);
 }

@@ -6,18 +6,26 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.jetty.server.Authentication.User;
+import edu.hm.data.LogicUser;
+import edu.hm.data.UserImpl;
+import edu.hm.logic.AuthService;
+import edu.hm.logic.AuthServiceImpl;
+import edu.hm.logic.AuthServiceResult;
 
 /** Dies ist unsere Implementierung der REST-API.
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-@Path("auth")
+@Path("account")
 public class MediaResource {
-//    @POST
-//    @Path("user")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response createUser(final User user){
-//        
-//    }
+    private static AuthService service = new AuthServiceImpl();
+    
+    @POST
+    @Path("user")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createUser(final UserImpl user){
+        AuthServiceResult asr = service.addUser((LogicUser) user);
+        
+        return Response.status(asr.getStatus()).entity(asr.getMessage()).build();
+    }
 }
