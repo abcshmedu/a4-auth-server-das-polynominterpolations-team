@@ -25,14 +25,12 @@ public class AuthServiceImpl implements AuthService {
 
         if (result == AuthServiceResult.OK) {
             users.put(user.getUserName(), user);
-            //tokens.put(user.getUserName(), token);
             result = AuthServiceResult.Created;
             result.setMessage("User created.");
-
         }
 
         return result;
-    };
+    }
     
     @Override
     public AuthServiceResult loginUser(LogicUser user) {
@@ -43,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         if(result == AuthServiceResult.OK){     //User hat sich korrekt eingeloggt, schicke ihm sein token
             token = generator.generateToken();
             
-            
+            tokens.put(user.getUserName(), token);
             result.setToken(token);
         }
         
