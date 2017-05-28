@@ -12,7 +12,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final Map<String, String> tokens = new HashMap<>();
     
-    private final Map<String, UserInformation> userInfos = new HashMap<>();
+    //private final Map<String, UserInformation> userInfos = new HashMap<>();
 
     // USER-METHODEN
     @Override
@@ -49,10 +49,9 @@ public class AuthServiceImpl implements AuthService {
     }
    
     @Override
-    public AuthServiceResult checkToken(final String token){
+    public AuthServiceResult verifyToken(final String token){
         AuthServiceResult result = null;
         
-        if(tokens.containsKey(key))
         
         return result;
     }
