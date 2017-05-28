@@ -6,8 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import edu.hm.data.LogicUser;
-import edu.hm.data.UserImpl;
+import edu.hm.data.User;
 import edu.hm.logic.AuthService;
 import edu.hm.logic.AuthServiceImpl;
 import edu.hm.logic.AuthServiceResult;
@@ -23,8 +22,8 @@ public class MediaResource {
     @POST
     @Path("user")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createUser(final UserImpl user){
-        AuthServiceResult asr = service.addUser((LogicUser) user);
+    public Response createUser(final User user){
+        AuthServiceResult asr = service.addUser(user);
         
         return Response.status(asr.getStatus()).entity(asr.getMessage()).build();
     }

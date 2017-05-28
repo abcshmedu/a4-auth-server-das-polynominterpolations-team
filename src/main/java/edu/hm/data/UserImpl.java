@@ -4,7 +4,7 @@ package edu.hm.data;
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-public class UserImpl implements LogicUser {
+public class UserImpl implements User {
     /** Alias-Name des Users. */
     private String userName;
 

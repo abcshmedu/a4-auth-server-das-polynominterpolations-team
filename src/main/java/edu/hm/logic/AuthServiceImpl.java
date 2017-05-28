@@ -1,23 +1,20 @@
 package edu.hm.logic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import edu.hm.data.LogicUser;
 import edu.hm.data.User;
 
 public class AuthServiceImpl implements AuthService {
     private final TokenGenerator generator = new TokenGenerator();
     
-    private final Map<String, LogicUser> users = new HashMap<>();
+    private final Map<String, User> users = new HashMap<>();
 
     private final Map<String, String> tokens = new HashMap<>();
 
     // USER-METHODEN
     @Override
-    public AuthServiceResult addUser(final LogicUser user) {
+    public AuthServiceResult addUser(final User user) {
         AuthServiceResult result;
         
 
@@ -33,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     }
     
     @Override
-    public AuthServiceResult loginUser(LogicUser user) {
+    public AuthServiceResult loginUser(User user) {
         AuthServiceResult result = null;
         String token = null;
         result = compareCredentials(user);
@@ -57,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
      * @param user
      *        Der User der getestet werden soll.
      * @return AuthServiceResult mit den Informationen ob es funktioniert hat */
-    private AuthServiceResult testUser(final LogicUser user) {
+    private AuthServiceResult testUser(final User user) {
         AuthServiceResult result = null;
 
         result = testUserName(user);
@@ -73,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
 
-    private AuthServiceResult testUserName(final LogicUser user) {
+    private AuthServiceResult testUserName(final User user) {
         AuthServiceResult result = null;
 
         if(user.getUserName().length() == 0){
@@ -89,7 +86,7 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
 
-    private AuthServiceResult testPassword(final LogicUser user) {
+    private AuthServiceResult testPassword(final User user) {
         AuthServiceResult result = null;
         String password = user.getPassword();
 
@@ -102,9 +99,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    private AuthServiceResult compareCredentials(final LogicUser user){
+    private AuthServiceResult compareCredentials(final User user){
         AuthServiceResult result = null;
-        LogicUser userInDatabase;
+        User userInDatabase;
         userInDatabase = users.get(user.getUserName());
         
         if(userInDatabase == null){

@@ -4,7 +4,7 @@ package edu.hm.data;
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-public class Admin {
+public class AdminImpl {
     /** Name des Admins. */
     private String name;
 
@@ -20,7 +20,7 @@ public class Admin {
      *        Der gewünschte Alias-Name
      * @param password
      *        Das gewünschte Passwort */
-    public Admin(final String adminName, final String password) {
+    public AdminImpl(final String adminName, final String password) {
         this(adminName, password, "");
     }
 
@@ -32,7 +32,7 @@ public class Admin {
      *        Das gewünschte Passwort #
      * @param name
      *        Der echte Name des Admins */
-    public Admin(final String adminName, final String password, final String name) {
+    public AdminImpl(final String adminName, final String password, final String name) {
         this.adminName = adminName;
         this.password = password;
         this.name = name;
