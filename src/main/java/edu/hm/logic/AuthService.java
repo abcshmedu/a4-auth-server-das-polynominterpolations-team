@@ -8,4 +8,5 @@ public interface AuthService {
     AuthServiceResult addUser(User user);
     
     AuthServiceResult loginUser(User user);
+    
 }

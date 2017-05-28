@@ -53,6 +53,20 @@ public class TestLoginUser {
         
         result = auth.loginUser(user1);
         assertNotEquals(null, result.getToken());
-        System.out.println(result.getToken());
+    }
+    
+    @Test
+    public void testMultiLogin(){
+        UserImpl user = new UserImpl("Basti", "asdfasdf");
+        
+        auth.addUser(user);
+        
+        result = auth.loginUser(user);
+        assertEquals(AuthServiceResult.OK, result);
+        assertEquals("Successfully logged in.", result.getMessage());
+
+        result = auth.loginUser(user);
+        assertEquals(AuthServiceResult.Conflict, result);
+        assertEquals("User already logged in.", result.getMessage());
     }
 }

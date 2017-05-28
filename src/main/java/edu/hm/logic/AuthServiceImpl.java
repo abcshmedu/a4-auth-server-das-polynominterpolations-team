@@ -16,8 +16,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthServiceResult addUser(final User user) {
         AuthServiceResult result;
-        
-
         result = testUser(user);
 
         if (result == AuthServiceResult.OK) {
@@ -35,15 +33,20 @@ public class AuthServiceImpl implements AuthService {
         String token = null;
         result = compareCredentials(user);
         
-        if(result == AuthServiceResult.OK){     //User hat sich korrekt eingeloggt, schicke ihm sein token
+        if(result == AuthServiceResult.OK && !tokens.containsKey(user.getUserName())){     //User hat sich korrekt eingeloggt, schicke ihm sein token
             token = generator.generateToken();
-            
             tokens.put(user.getUserName(), token);
             result.setToken(token);
+        }
+        else if(result == AuthServiceResult.OK && tokens.containsKey(user.getUserName())){
+            result = AuthServiceResult.Conflict;
+            result.setMessage("User already logged in.");
         }
         
         return result;
     }
+    
+    
 
     
 
@@ -56,7 +59,6 @@ public class AuthServiceImpl implements AuthService {
      * @return AuthServiceResult mit den Informationen ob es funktioniert hat */
     private AuthServiceResult testUser(final User user) {
         AuthServiceResult result = null;
-
         result = testUserName(user);
 
         if (result == null) // if the username is okay test the password
@@ -77,7 +79,6 @@ public class AuthServiceImpl implements AuthService {
             result = AuthServiceResult.Bad_Request;
             result.setMessage("Username is too short.");
         }
-        
         if (users.containsKey(user.getUserName())) { // User schon vorhanden
             result = AuthServiceResult.Conflict;
             result.setMessage("Username already in use.");
@@ -101,8 +102,7 @@ public class AuthServiceImpl implements AuthService {
 
     private AuthServiceResult compareCredentials(final User user){
         AuthServiceResult result = null;
-        User userInDatabase;
-        userInDatabase = users.get(user.getUserName());
+        User userInDatabase = users.get(user.getUserName());
         
         if(userInDatabase == null){
             result = AuthServiceResult.Not_Found;
