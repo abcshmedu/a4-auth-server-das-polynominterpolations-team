@@ -1,5 +1,7 @@
 package edu.hm.logic;
 
+import edu.hm.data.UserInformation;
+
 /** Dies ist unsere Implementierung des AuthServiceResult-Enums.
  * 
  * @author Sebastian Becker
@@ -17,6 +19,9 @@ public enum AuthServiceResult {
 
     /** Diese Variable enthält ein Token, falls es generiert wird. */
     private String token;
+
+    /** Diese Variable enthält das JWT, falls ein Token validiert wurde. */
+    private UserInformation jwt;
 
     /** Default Ctor des AuthServiceResult-Enums.
      * 
@@ -52,8 +57,16 @@ public enum AuthServiceResult {
     public void setToken(String token) {
         this.token = token;
     }
-    
+
     public String getToken() {
         return token;
+    }
+    
+    public void setJwt(UserInformation jwt) {
+        this.jwt = jwt;
+    }
+    
+    public UserInformation getJwt() {
+        return jwt;
     }
 }

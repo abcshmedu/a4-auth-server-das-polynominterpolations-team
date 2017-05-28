@@ -3,55 +3,78 @@ package edu.hm.logic;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.hm.data.ShareItAccess;
 import edu.hm.data.User;
+import edu.hm.data.UserInformation;
 
 public class AuthServiceImpl implements AuthService {
     private final TokenGenerator generator = new TokenGenerator();
-    
+
+    /** Liste für die Tokens. Map<Token, Username> */
+    private final Map<String, String> tokens = new HashMap<>();
+
+    /** Liste für die User. */
     private final Map<String, User> users = new HashMap<>();
 
-    private final Map<String, String> tokens = new HashMap<>();
-    
-    //private final Map<String, UserInformation> userInfos = new HashMap<>();
+    private final Map<User, UserInformation> userinfos = new HashMap<>();
 
     // USER-METHODEN
     @Override
     public AuthServiceResult addUser(final User user) {
         AuthServiceResult result;
+        UserInformation userInfo;
         result = testUser(user);
+        userInfo = new UserInformation(ShareItAccess.USER);
 
         if (result == AuthServiceResult.OK) {
             users.put(user.getUserName(), user);
+            userinfos.put(user, userInfo);
             result = AuthServiceResult.Created;
             result.setMessage("User created.");
         }
 
         return result;
     }
-    
+
     @Override
     public AuthServiceResult loginUser(User user) {
         AuthServiceResult result = null;
         String token = null;
         result = compareCredentials(user);
-        
-        if(result == AuthServiceResult.OK && !tokens.containsKey(user.getUserName())){     //User hat sich korrekt eingeloggt, schicke ihm sein token
+
+        if (result == AuthServiceResult.OK && !tokens.containsValue(user.getUserName())) { // User
+                                                                                         // hat
+                                                                                         // sich
+                                                                                         // korrekt
+                                                                                         // eingeloggt
             token = generator.generateToken();
-            tokens.put(user.getUserName(), token);
+            tokens.put(token, user.getUserName());
             result.setToken(token);
-        }
-        else if(result == AuthServiceResult.OK && tokens.containsKey(user.getUserName())){
+        } else if (result == AuthServiceResult.OK && tokens.containsValue(user.getUserName())) {
             result = AuthServiceResult.Conflict;
             result.setMessage("User already logged in.");
         }
-        
+
         return result;
     }
-   
+
     @Override
-    public AuthServiceResult verifyToken(final String token){
+    public AuthServiceResult verifyToken(final String token) {
         AuthServiceResult result = null;
-        
+
+        if(!tokens.containsKey(token)){
+            result = AuthServiceResult.Bad_Request;
+            result.setMessage("Token is invalid.");
+        }
+        else{
+            String username = tokens.get(token);
+            User user = users.get(username);
+            UserInformation jwt = userinfos.get(user);
+            
+            result = AuthServiceResult.OK;
+            result.setMessage("Token is valid.");
+            result.setJwt(jwt);
+        }
         
         return result;
     }
@@ -81,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
     private AuthServiceResult testUserName(final User user) {
         AuthServiceResult result = null;
 
-        if(user.getUserName().length() == 0){
+        if (user.getUserName().length() == 0) {
             result = AuthServiceResult.Bad_Request;
             result.setMessage("Username is too short.");
         }
@@ -105,31 +128,27 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
 
-
-    private AuthServiceResult compareCredentials(final User user){
+    private AuthServiceResult compareCredentials(final User user) {
         AuthServiceResult result = null;
         User userInDatabase = users.get(user.getUserName());
-        
-        if(userInDatabase == null){
+
+        if (userInDatabase == null) {
             result = AuthServiceResult.Not_Found;
             result.setMessage("Username was not found.");
-        }
-        else if(userInDatabase != null){
-            if(!user.getPassword().equals(userInDatabase.getPassword())){
+        } else if (userInDatabase != null) {
+            if (!user.getPassword().equals(userInDatabase.getPassword())) {
                 result = AuthServiceResult.Bad_Request;
                 result.setMessage("Password is incorrect.");
             }
         }
-        
-        if(result == null){
+
+        if (result == null) {
             result = AuthServiceResult.OK;
             result.setMessage("Successfully logged in.");
         }
-        
+
         return result;
     }
-
-
 
     // ADMIN-METHODEN
 
