@@ -13,22 +13,21 @@ public class AuthServiceImpl implements AuthService {
     /** Liste für die Tokens. Map<Token, Username> */
     private final Map<String, String> tokens = new HashMap<>();
 
-    /** Liste für die User. */
+    /** Liste für die User. Map<Username, User> */
     private final Map<String, User> users = new HashMap<>();
 
+    /** Map<User, JWT> */
     private final Map<User, UserInformation> userinfos = new HashMap<>();
 
     // USER-METHODEN
     @Override
     public AuthServiceResult addUser(final User user) {
         AuthServiceResult result;
-        UserInformation userInfo;
         result = testUser(user);
-        userInfo = new UserInformation(ShareItAccess.USER);
 
         if (result == AuthServiceResult.OK) {
             users.put(user.getUserName(), user);
-            userinfos.put(user, userInfo);
+            userinfos.put(user, new UserInformation(ShareItAccess.USER));
             result = AuthServiceResult.Created;
             result.setMessage("User created.");
         }
@@ -43,10 +42,10 @@ public class AuthServiceImpl implements AuthService {
         result = compareCredentials(user);
 
         if (result == AuthServiceResult.OK && !tokens.containsValue(user.getUserName())) { // User
-                                                                                         // hat
-                                                                                         // sich
-                                                                                         // korrekt
-                                                                                         // eingeloggt
+                                                                                           // hat
+                                                                                           // sich
+                                                                                           // korrekt
+                                                                                           // eingeloggt
             token = generator.generateToken();
             tokens.put(token, user.getUserName());
             result.setToken(token);
@@ -62,20 +61,19 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceResult verifyToken(final String token) {
         AuthServiceResult result = null;
 
-        if(!tokens.containsKey(token)){
+        if (!tokens.containsKey(token)) {
             result = AuthServiceResult.Bad_Request;
             result.setMessage("Token is invalid.");
-        }
-        else{
+        } else {
             String username = tokens.get(token);
             User user = users.get(username);
             UserInformation jwt = userinfos.get(user);
-            
+
             result = AuthServiceResult.OK;
             result.setMessage("Token is valid.");
             result.setJwt(jwt);
         }
-        
+
         return result;
     }
 

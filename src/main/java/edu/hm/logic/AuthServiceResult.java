@@ -15,7 +15,7 @@ public enum AuthServiceResult {
 
     /** Diese Variable enthält zusätzliche Informationen bezüglich des
      * Error-Codes. */
-    private String detail;
+    private String message;
 
     /** Diese Variable enthält ein Token, falls es generiert wird. */
     private String token;
@@ -29,7 +29,7 @@ public enum AuthServiceResult {
      *        Der Error-Code, des Enums */
     AuthServiceResult(int errorCode) {
         this.statusCode = errorCode;
-        this.detail = "";
+        this.message = "";
     }
 
     /** Diese Methode ermöglicht es dem Enum eine Error-Message mitzugeben.
@@ -37,7 +37,7 @@ public enum AuthServiceResult {
      * @param message
      *        Die Nachricht des Enums */
     public void setMessage(String message) {
-        this.detail = message;
+        this.message = message;
     }
 
     /** Getter für den Error-Code.
@@ -51,7 +51,7 @@ public enum AuthServiceResult {
      * 
      * @return Liefert die Error-Message zurück */
     public String getMessage() {
-        return detail;
+        return message;
     }
 
     public void setToken(String token) {

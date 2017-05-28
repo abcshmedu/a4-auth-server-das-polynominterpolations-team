@@ -1,6 +1,7 @@
 package edu.hm.api;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -24,17 +25,22 @@ public class MediaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(final UserImpl user){
         AuthServiceResult asr = service.addUser(user);
-        
         return Response.status(asr.getStatus()).entity(asr.getMessage()).build();
     }
-    
     
     @POST
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response loginUser(final UserImpl user){
         AuthServiceResult asr = service.loginUser(user);
-        
         return Response.status(asr.getStatus()).entity(asr.getMessage()).header("Token", asr.getToken()).build();
+    }
+    
+    @POST
+    @Path("verify")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response verifyToken(@HeaderParam("Token") final String token){
+        AuthServiceResult asr = service.verifyToken(token);
+        return Response.status(asr.getStatus()).entity(asr.getMessage()).header("JWT", asr.getJwt()).build();
     }
 }
