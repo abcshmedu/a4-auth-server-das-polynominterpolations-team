@@ -11,6 +11,8 @@ public class AuthServiceImpl implements AuthService {
     private final Map<String, User> users = new HashMap<>();
 
     private final Map<String, String> tokens = new HashMap<>();
+    
+    private final Map<String, UserInformation> userInfos = new HashMap<>();
 
     // USER-METHODEN
     @Override
@@ -46,9 +48,14 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
    
-    
-
-    
+    @Override
+    public AuthServiceResult checkToken(final String token){
+        AuthServiceResult result = null;
+        
+        if(tokens.containsKey(key))
+        
+        return result;
+    }
 
     // USER-TEST-METHODEN
 

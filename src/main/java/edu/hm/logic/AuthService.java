@@ -9,4 +9,5 @@ public interface AuthService {
     
     AuthServiceResult loginUser(User user);
     
+    AuthServiceResult verifyToken(String token);
 }
