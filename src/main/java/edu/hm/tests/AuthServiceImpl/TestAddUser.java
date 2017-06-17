@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.hm.data.User;
-import edu.hm.data.UserImpl;
+import edu.hm.data.User;
 import edu.hm.logic.AuthService;
 import edu.hm.logic.AuthServiceImpl;
 import edu.hm.logic.AuthServiceResult;
@@ -23,7 +23,7 @@ public class TestAddUser {
     
     @Test
     public void testEmptyUsername(){
-        UserImpl user = new UserImpl("", "asdfasdf");
+        User user = new User("", "asdfasdf");
         result = auth.addUser(user);
         assertEquals(AuthServiceResult.Bad_Request, result);
         assertEquals("Username is too short.", result.getMessage());
@@ -31,8 +31,8 @@ public class TestAddUser {
     
     @Test
     public void testDuplicateUsername(){
-        UserImpl user1 = new UserImpl("Basti", "asdfasdf");
-        UserImpl user2 = new UserImpl("Basti", "asdfasdf");
+        User user1 = new User("Basti", "asdfasdf");
+        User user2 = new User("Basti", "asdfasdf");
         
         result = auth.addUser(user1);
         assertEquals(AuthServiceResult.Created , result);
@@ -45,7 +45,7 @@ public class TestAddUser {
 
     @Test
     public void testEmptyUsernameAndPW() {
-        UserImpl user = new UserImpl ("", "");
+        User user = new User ("", "");
         result = auth.addUser(user);
         assertEquals(AuthServiceResult.Bad_Request, result);
         assertEquals("Username is too short.", result.getMessage());
@@ -53,7 +53,7 @@ public class TestAddUser {
     
     @Test
     public void testEmptyPassword(){
-        UserImpl user = new UserImpl("Basti", "");
+        User user = new User("Basti", "");
         result = auth.addUser(user);
         assertEquals(AuthServiceResult.Bad_Request, result);
         assertEquals("Password is less than 8 characters.", result.getMessage());

@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.hm.data.UserImpl;
+import edu.hm.data.User;
 import edu.hm.logic.AuthService;
 import edu.hm.logic.AuthServiceImpl;
 import edu.hm.logic.AuthServiceResult;
@@ -22,7 +22,7 @@ public class TestLoginUser {
 
     @Test
     public void testSuccessfullLogin() {
-        UserImpl user1 = new UserImpl("Basti", "asdfasdf");
+        User user1 = new User("Basti", "asdfasdf");
         
         result = auth.addUser(user1);
         assertEquals(AuthServiceResult.Created , result);
@@ -35,8 +35,8 @@ public class TestLoginUser {
 
     @Test
     public void testLoginWithUnknownUser(){
-        UserImpl user1 = new UserImpl("Basti", "asdfasdf");
-        UserImpl user2 = new UserImpl("Peter", "asdfasdf");
+        User user1 = new User("Basti", "asdfasdf");
+        User user2 = new User("Peter", "asdfasdf");
         
         auth.addUser(user1);
         
@@ -47,7 +47,7 @@ public class TestLoginUser {
     
     @Test
     public void testTokenGeneration(){
-        UserImpl user1 = new UserImpl("Basti", "asdfasdf");
+        User user1 = new User("Basti", "asdfasdf");
         
         auth.addUser(user1);
         
@@ -57,7 +57,7 @@ public class TestLoginUser {
     
     @Test
     public void testMultiLogin(){
-        UserImpl user = new UserImpl("Basti", "asdfasdf");
+        User user = new User("Basti", "asdfasdf");
         
         auth.addUser(user);
         

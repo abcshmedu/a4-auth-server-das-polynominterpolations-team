@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.hm.data.UserImpl;
+import edu.hm.data.User;
 import edu.hm.logic.AuthService;
 import edu.hm.logic.AuthServiceImpl;
 import edu.hm.logic.AuthServiceResult;
@@ -22,7 +22,7 @@ public class TestVerifyToken {
     
     @Test
     public void testValidToken() {
-        UserImpl user = new UserImpl("Basti", "asdfasdf");
+        User user = new User("Basti", "asdfasdf");
         String token;
         
         auth.addUser(user);
@@ -36,7 +36,7 @@ public class TestVerifyToken {
     
     @Test
     public void testInvalidToken() {
-        UserImpl user = new UserImpl("Basti", "asdfasdf");
+        User user = new User("Basti", "asdfasdf");
         String token = "NotAValidToken";
         
         auth.addUser(user);

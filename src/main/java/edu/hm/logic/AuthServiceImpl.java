@@ -8,6 +8,9 @@ import edu.hm.data.User;
 import edu.hm.data.UserInformation;
 
 public class AuthServiceImpl implements AuthService {
+	/**
+	 * Referenz auf einen Token-Generator, welcher Tokens für User erzeugt.
+	 */
     private final TokenGenerator generator = new TokenGenerator();
 
     /** Liste für die Tokens. Map<Token, Username> */
@@ -19,7 +22,6 @@ public class AuthServiceImpl implements AuthService {
     /** Map<User, JWT> */
     private final Map<User, UserInformation> userinfos = new HashMap<>();
 
-    // USER-METHODEN
     @Override
     public AuthServiceResult addUser(final User user) {
         AuthServiceResult result;
@@ -40,16 +42,14 @@ public class AuthServiceImpl implements AuthService {
         AuthServiceResult result = null;
         String token = null;
         result = compareCredentials(user);
-
-        if (result == AuthServiceResult.OK && !tokens.containsValue(user.getUserName())) { // User
-                                                                                           // hat
-                                                                                           // sich
-                                                                                           // korrekt
-                                                                                           // eingeloggt
+     
+        // User hat sich korrekt eingeloggt
+        if (result == AuthServiceResult.OK && !tokens.containsValue(user.getUserName())) { 
             token = generator.generateToken();
             tokens.put(token, user.getUserName());
             result.setToken(token);
-        } else if (result == AuthServiceResult.OK && tokens.containsValue(user.getUserName())) {
+        }
+        else if (result == AuthServiceResult.OK && tokens.containsValue(user.getUserName())) {
             result = AuthServiceResult.Conflict;
             result.setMessage("User already logged in.");
         }
@@ -61,10 +61,14 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceResult verifyToken(final String token) {
         AuthServiceResult result = null;
 
-        if (!tokens.containsKey(token)) {
-            result = AuthServiceResult.Bad_Request;
-            result.setMessage("Token is invalid.");
-        } else {
+        if(result == null){ // Testen ob das Token in der Datenbank ist
+	        if (!tokens.containsKey(token)) {
+	            result = AuthServiceResult.Bad_Request;
+	            result.setMessage("Token is invalid.");
+	        }
+        }
+        
+        if(result == null) {
             String username = tokens.get(token);
             User user = users.get(username);
             UserInformation jwt = userinfos.get(user);
@@ -77,8 +81,6 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
 
-    // USER-TEST-METHODEN
-
     /** Diese Methode testet ob ein User gültig ist.
      * 
      * @param user
@@ -86,12 +88,14 @@ public class AuthServiceImpl implements AuthService {
      * @return AuthServiceResult mit den Informationen ob es funktioniert hat */
     private AuthServiceResult testUser(final User user) {
         AuthServiceResult result = null;
-        result = testUserName(user);
+        
+        if(result == null)	// Testen des username
+        	result = testUserName(user);
 
-        if (result == null) // if the username is okay test the password
+        if (result == null) // Testen des Passwords
             result = testPassword(user);
 
-        if (result == null) { // all tests were ok
+        if (result == null) { // if all tests were ok
             result = AuthServiceResult.OK;
             result.setMessage("User created.");
         }
@@ -102,13 +106,17 @@ public class AuthServiceImpl implements AuthService {
     private AuthServiceResult testUserName(final User user) {
         AuthServiceResult result = null;
 
-        if (user.getUserName().length() == 0) {
-            result = AuthServiceResult.Bad_Request;
-            result.setMessage("Username is too short.");
-        }
-        if (users.containsKey(user.getUserName())) { // User schon vorhanden
-            result = AuthServiceResult.Conflict;
-            result.setMessage("Username already in use.");
+        if(result == null){ // Testen ob Username lang genug ist
+	        if (user.getUserName().length() == 0) {
+	            result = AuthServiceResult.Bad_Request;
+	            result.setMessage("Username is too short.");
+	        }
+	    }
+        if(result == null){ // Testen ob Username schon vorhanden
+	        if (users.containsKey(user.getUserName())) { 
+	            result = AuthServiceResult.Conflict;
+	            result.setMessage("Username already in use.");
+	        }
         }
 
         return result;
@@ -147,29 +155,4 @@ public class AuthServiceImpl implements AuthService {
 
         return result;
     }
-
-    // ADMIN-METHODEN
-
-    // @Override
-    // public AuthServiceResult addAdmin(Admin admin) {
-    // AuthServiceResult result = AuthServiceResult.OK;
-    //
-    // if(!checkAdmin(admin))
-    // result = AuthServiceResult.Bad_Request;
-    // else if(admins.containsKey(admin.getAlias()))
-    // result = AuthServiceResult.Conflict;
-    // else
-    // admins.put(admin.getAlias(), admin);
-    //
-    // return result;
-    // }
-    //
-    //
-    // private boolean checkAdmin(final Admin admin){
-    // boolean adminIsCorrect = false;
-    //
-    // if(admin.getAlias() != null )
-    //
-    // return adminIsCorrect;
-    // }
 }
