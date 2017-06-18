@@ -46,10 +46,12 @@ public class AuthServiceImpl implements AuthService {
 	    result = compareCredentials(user);
 
 	// Die User-Daten sind gültig
-	if (result == AuthServiceResult.OK)
+	if (result == AuthServiceResult.Correct_User_Credentials)
 	    if (!tokens.containsValue(user.getUserName())) {
 		token = generator.generateToken();
 		tokens.put(token, user.getUserName());
+		result = AuthServiceResult.OK;
+		result.setMessage("User successfully logged in.");
 		result.setToken(token);
 	    }
 	    else {
