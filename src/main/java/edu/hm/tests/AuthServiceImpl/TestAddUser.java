@@ -14,48 +14,48 @@ import edu.hm.logic.AuthServiceResult;
 public class TestAddUser {
     AuthService auth;
     AuthServiceResult result;
-    
+
     @Before
-    public void setupVariables(){
-        auth = new AuthServiceImpl();
-        result = null;
+    public void setupVariables() {
+	auth = new AuthServiceImpl();
+	result = null;
     }
-    
+
     @Test
-    public void testEmptyUsername(){
-        User user = new User("", "asdfasdf");
-        result = auth.addUser(user);
-        assertEquals(AuthServiceResult.Bad_Request, result);
-        assertEquals("Username is too short.", result.getMessage());
+    public void testEmptyUsername() {
+	User user = new User("", "asdfasdf");
+	result = auth.addUser(user);
+	assertEquals(AuthServiceResult.Bad_Request, result);
+	assertEquals("Username is too short.", result.getMessage());
     }
-    
+
     @Test
-    public void testDuplicateUsername(){
-        User user1 = new User("Basti", "asdfasdf");
-        User user2 = new User("Basti", "asdfasdf");
-        
-        result = auth.addUser(user1);
-        assertEquals(AuthServiceResult.Created , result);
-        assertEquals("User created.", result.getMessage());
-        
-        result = auth.addUser(user2);
-        assertEquals(AuthServiceResult.Conflict, result);
-        assertEquals("Username already in use.", result.getMessage());
+    public void testDuplicateUsername() {
+	User user1 = new User("Basti", "asdfasdf");
+	User user2 = new User("Basti", "asdfasdf");
+
+	result = auth.addUser(user1);
+	assertEquals(AuthServiceResult.Created, result);
+	assertEquals("User created.", result.getMessage());
+
+	result = auth.addUser(user2);
+	assertEquals(AuthServiceResult.Conflict, result);
+	assertEquals("Username already in use.", result.getMessage());
     }
 
     @Test
     public void testEmptyUsernameAndPW() {
-        User user = new User ("", "");
-        result = auth.addUser(user);
-        assertEquals(AuthServiceResult.Bad_Request, result);
-        assertEquals("Username is too short.", result.getMessage());
+	User user = new User("", "");
+	result = auth.addUser(user);
+	assertEquals(AuthServiceResult.Bad_Request, result);
+	assertEquals("Username is too short.", result.getMessage());
     }
-    
+
     @Test
-    public void testEmptyPassword(){
-        User user = new User("Basti", "");
-        result = auth.addUser(user);
-        assertEquals(AuthServiceResult.Bad_Request, result);
-        assertEquals("Password is less than 8 characters.", result.getMessage());
+    public void testEmptyPassword() {
+	User user = new User("Basti", "");
+	result = auth.addUser(user);
+	assertEquals(AuthServiceResult.Bad_Request, result);
+	assertEquals("Password is less than 8 characters.", result.getMessage());
     }
 }

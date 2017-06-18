@@ -13,25 +13,25 @@ import edu.hm.logic.AuthServiceResult;
 public class TestVerifyToken {
     AuthService auth;
     AuthServiceResult result;
-    
+
     @Before
-    public void setupVariables(){
-        auth = new AuthServiceImpl();
-        result = null;
+    public void setupVariables() {
+	auth = new AuthServiceImpl();
+	result = null;
     }
-    
+
     @Test
     public void testValidToken() {
-        User user = new User("Basti", "asdfasdf");
-        String token;
-        
-        auth.addUser(user);
-        result = auth.loginUser(user);
-        token = result.getToken();
-        result = auth.verifyToken(token);
+	User user = new User("Basti", "asdfasdf");
+	String token;
 
-        assertEquals(AuthServiceResult.OK, result);
-        assertEquals("Token is valid.", result.getMessage());
+	auth.addUser(user);
+	result = auth.loginUser(user);
+	token = result.getToken();
+	result = auth.verifyToken(token);
+
+	assertEquals(AuthServiceResult.OK, result);
+	assertEquals("Token is valid.", result.getMessage());
     }
     
     @Test

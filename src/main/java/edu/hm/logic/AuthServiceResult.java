@@ -26,47 +26,47 @@ public enum AuthServiceResult {
     /** Default Ctor des AuthServiceResult-Enums.
      * 
      * @param errorCode
-     *        Der Error-Code, des Enums */
+     *            Der Error-Code, des Enums */
     AuthServiceResult(int errorCode) {
-        this.statusCode = errorCode;
-        this.message = "";
+	this.statusCode = errorCode;
+	this.message = "";
     }
 
     /** Diese Methode ermöglicht es dem Enum eine Error-Message mitzugeben.
      * 
      * @param message
-     *        Die Nachricht des Enums */
+     *            Die Nachricht des Enums */
     public void setMessage(String message) {
-        this.message = message;
+	this.message = message;
     }
 
     /** Getter für den Error-Code.
      * 
      * @return Liefert den Error-Code zurück */
     public int getStatus() {
-        return statusCode;
+	return statusCode;
     }
 
     /** Getter für die Message.
      * 
      * @return Liefert die Error-Message zurück */
     public String getMessage() {
-        return message;
+	return message;
     }
 
     public void setToken(String token) {
-        this.token = token;
+	this.token = token;
     }
 
     public String getToken() {
-        return token;
+	return token;
     }
-    
+
     public void setJwt(UserInformation jwt) {
-        this.jwt = jwt;
+	this.jwt = jwt;
     }
-    
+
     public UserInformation getJwt() {
-        return jwt;
+	return jwt;
     }
 }
