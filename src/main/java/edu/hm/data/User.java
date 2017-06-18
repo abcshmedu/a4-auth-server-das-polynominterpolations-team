@@ -4,45 +4,42 @@ package edu.hm.data;
  * 
  * @author Sebastian Becker
  * @author Peter Straßer */
-public class User{
+public class User {
     /** Alias-Name des Users. */
     private String userName;
 
     /** Passwort des Users. */
     private String password;
 
-    public User(){
-    }
-    
+    public User() {}
+
     /** Custom-Ctor für einen neuen User.
      * 
      * @param userName
-     *        Der gewünschte Alias-Name
+     *            Der gewünschte Alias-Name
      * @param password
-     *        Das gewünschte Passwort */
+     *            Das gewünschte Passwort */
     public User(final String userName, final String password) {
-        this.userName = userName;
-        this.password = password;
+	this.userName = userName;
+	this.password = password;
     }
 
-    /**
-     * Diese Methode liefert den Username zurück.
-     * @return Username des Users
-     */
+    /** Diese Methode liefert den Username zurück.
+     * 
+     * @return Username des Users */
     public String getUserName() {
-        return userName;
+	return userName;
     }
 
-    /**
-     * Diese Methode liefert das Passwort zurück.
-     * @return Passwort des User
-     */
+    /** Diese Methode liefert das Passwort zurück.
+     * 
+     * @return Passwort des User */
     public String getPassword() {
-        return password;
+	return password;
     }
 
     @Override
     public String toString() {
-        return userName;
+	return userName;
     }
 }

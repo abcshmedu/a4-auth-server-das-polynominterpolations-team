@@ -7,7 +7,7 @@ import edu.hm.data.UserInformation;
  * @author Sebastian Becker
  * @author Peter Straßer */
 public enum AuthServiceResult {
-    OK(200), Created(201), Bad_Request(400), Unauthorized(401), Not_Found(404), Conflict(409);
+    OK(200), Created(201), Correct_User_Credentials(202), Bad_Request(400), Unauthorized(401), Not_Found(404), Conflict(409);
 
     /** Diese Variable enthält den Error-Code jedes
      * AuthServiceResult-Objekts. */
